@@ -1,17 +1,21 @@
 package seedu.addressbook;
 
-import seedu.addressbook.data.person.ReadOnlyPerson;
-import seedu.addressbook.storage.StorageFile.*;
-
-import seedu.addressbook.commands.*;
-import seedu.addressbook.data.AddressBook;
-import seedu.addressbook.parser.Parser;
-import seedu.addressbook.storage.StorageFile;
-import seedu.addressbook.ui.TextUi;
-
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import seedu.addressbook.commands.Command;
+import seedu.addressbook.commands.CommandResult;
+import seedu.addressbook.commands.ExitCommand;
+import seedu.addressbook.data.AddressBook;
+import seedu.addressbook.data.person.ReadOnlyPerson;
+import seedu.addressbook.parser.Parser;
+import seedu.addressbook.storage.StorageFile;
+import seedu.addressbook.storage.StorageFile.InvalidStorageFilePathException;
+import seedu.addressbook.storage.StorageFile.StorageDeletedException;
+import seedu.addressbook.storage.StorageFile.StorageOperationException;
+import seedu.addressbook.ui.TextUi;
 
 
 /**
@@ -38,7 +42,11 @@ public class Main {
     /** Runs the program until termination.  */
     public void run(String[] launchArgs) {
         start(launchArgs);
-        runCommandLoopUntilExitCommand();
+        try {
+			runCommandLoopUntilExitCommand();
+		} catch (StorageDeletedException e) {
+			e.printStackTrace();
+		}
         exit();
     }
 
@@ -76,8 +84,9 @@ public class Main {
         System.exit(0);
     }
 
-    /** Reads the user command and executes it, until the user issues the exit command.  */
-    private void runCommandLoopUntilExitCommand() {
+    /** Reads the user command and executes it, until the user issues the exit command.  
+     * @throws StorageDeletedException */
+    private void runCommandLoopUntilExitCommand() throws StorageDeletedException {
         Command command;
         do {
             String userCommandText = ui.getUserCommand();
@@ -103,8 +112,15 @@ public class Main {
      * @param command user command
      * @return result of the command
      */
-    private CommandResult executeCommand(Command command)  {
+    /**
+     * @param command
+     * @return
+     */
+    private CommandResult executeCommand(Command command) throws StorageDeletedException {
         try {
+        	if (!isStorageFileValid()) {
+        		throw new StorageDeletedException("Storage File was deleted!");
+        	};
             command.setData(addressBook, lastShownList);
             CommandResult result = command.execute();
             storage.save(addressBook);
@@ -116,6 +132,14 @@ public class Main {
     }
 
     /**
+     * 
+     */
+    private boolean isStorageFileValid() {
+    	File f = new File(storage.getPath());
+		return f.exists();
+	}
+
+	/**
      * Creates the StorageFile object based on the user specified path (if any) or the default storage path.
      * @param launchArgs arguments supplied by the user at program launch
      * @throws InvalidStorageFilePathException if the target file path is incorrect.

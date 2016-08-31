@@ -42,6 +42,15 @@ public class StorageFile {
             super(message);
         }
     }
+    
+    /**
+     * Signals that storage file is deleted while program is still running
+     */
+    public static class StorageDeletedException extends Exception {
+        public StorageDeletedException(String message) {
+            super(message);
+        }
+    }
 
     private final JAXBContext jaxbContext;
 
