@@ -11,13 +11,14 @@ public class Address {
     public static final String EXAMPLE = "123, Clementi Ave 3, #12-34, 231534";
     public static final String MESSAGE_ADDRESS_CONSTRAINTS = "Person addresses can be in any format";
     public static final String MESSAGE_ADDRESS_ERROR = "Missing arguments for address";
-    public static final String ADDRESS_VALIDATION_REGEX = ".+";
+    public static final String ADDRESS_VALIDATION_REGEX = "(.+),(.+),(.+),(.+)";
+    public static final int ADDRESS_ARGUMENTS = 4;
 
     private boolean isPrivate;
-    public final Block block;
-    public final Street street;
-    public final Unit unit;
-    public final PostalCode postalCode;
+    private final Block block;
+    private final Street street;
+    private final Unit unit;
+    private final PostalCode postalCode;
 
     /**
      * Validates given address.
@@ -30,7 +31,7 @@ public class Address {
             throw new IllegalValueException(MESSAGE_ADDRESS_CONSTRAINTS);
         }
         String[] addressArr = address.split(",");
-        if (addressArr.length!=4) {
+        if (addressArr.length!=ADDRESS_ARGUMENTS) {
         	throw new IllegalValueException(MESSAGE_ADDRESS_ERROR);
         }
         block = new Block(addressArr[0].trim());
@@ -44,6 +45,7 @@ public class Address {
      * Returns true if a given string is a valid person email.
      */
     public static boolean isValidAddress(String test) {
+    	
         return test.matches(ADDRESS_VALIDATION_REGEX);
     }
 
