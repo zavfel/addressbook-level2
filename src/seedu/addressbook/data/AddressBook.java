@@ -1,15 +1,21 @@
 package seedu.addressbook.data;
 
-import seedu.addressbook.data.person.*;
-import seedu.addressbook.data.person.UniquePersonList.*;
-import seedu.addressbook.data.tag.UniqueTagList;
-import seedu.addressbook.data.tag.UniqueTagList.*;
-import seedu.addressbook.data.tag.Tag;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import seedu.addressbook.data.person.Person;
+import seedu.addressbook.data.person.ReadOnlyPerson;
+import seedu.addressbook.data.person.UniquePersonList;
+import seedu.addressbook.data.person.UniquePersonList.DuplicatePersonException;
+import seedu.addressbook.data.person.UniquePersonList.PersonNotFoundException;
+import seedu.addressbook.data.tag.Tag;
+import seedu.addressbook.data.tag.Tagging;
+import seedu.addressbook.data.tag.UniqueTagList;
+import seedu.addressbook.data.tag.UniqueTagList.DuplicateTagException;
+import seedu.addressbook.data.tag.UniqueTagList.TagNotFoundException;
 
 /**
  * Represents the entire address book. Contains the data of the address book.
@@ -22,6 +28,7 @@ public class AddressBook {
 
     private final UniquePersonList allPersons;
     private final UniqueTagList allTags; // can contain tags not attached to any person
+    private static ArrayList<Tagging> tags;
 
     /**
      * Creates an empty address book.
@@ -29,6 +36,7 @@ public class AddressBook {
     public AddressBook() {
         allPersons = new UniquePersonList();
         allTags = new UniqueTagList();
+        tags = new ArrayList<Tagging>();
     }
 
     /**
@@ -40,7 +48,9 @@ public class AddressBook {
      */
     public AddressBook(UniquePersonList persons, UniqueTagList tags) {
         this.allPersons = new UniquePersonList(persons);
+        this.tags = new ArrayList<Tagging>();
         this.allTags = new UniqueTagList(tags);
+        
         for (Person p : allPersons) {
             syncTagsWithMasterList(p);
         }
@@ -142,5 +152,16 @@ public class AddressBook {
      */
     public UniqueTagList getAllTags() {
         return new UniqueTagList(allTags);
+    }
+    
+    public static String getSessionTaggings() {
+        final StringBuilder builder = new StringBuilder();
+        
+    	for (Tagging t: tags) {
+    		builder.append(t.toString())
+    				.append("\n");
+    	}
+    	
+    	return builder.toString();
     }
 }

@@ -87,6 +87,8 @@ public class Main {
             ui.showResultToUser(result);
 
         } while (!ExitCommand.isExit(command));
+        
+        ui.showToUser(AddressBook.getSessionTaggings());
     }
 
     /** Updates the {@link #lastShownList} if the result contains a list of Persons. */

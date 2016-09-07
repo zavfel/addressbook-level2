@@ -1,36 +1,39 @@
 package seedu.addressbook.data.tag;
 
-import java.util.ArrayList;
+import seedu.addressbook.data.person.Person;
 
 /**
  * keep tracks of tags added or deleted during the seesion
  *
  */
 public class Tagging {
-	private static ArrayList<String> commands;
-	private static ArrayList<String> people;
-	private static ArrayList<String> tags;
-	private static int nextIndex = 1;
+	public enum Command {
+		ADD, REMOVE
+	}
 	
-	private int index;
+	private Command command;
+	private Person person;
+	private Tag tag;
 	
-	public Tagging(String command, String person, String tag) {
-		commands.add(command);
-		people.add(person);
-		tags.add(tag);
-		index = nextIndex;
-		nextIndex++;
+	public Tagging(Command command, Person person, Tag tag) {
+		this.command = command;
+		this.person = person;
+		this.tag = tag;
 	}
 	
 	/**
-	 * prints out a list of tags added/deleted during session
+	 * prints out the command for particular tag
 	 */
-	public void getSessionTagInfo() {
-		for (int i=0;i<nextIndex;i++) {
-			String info = commands.get(i) + " " 
-					+ people.get(i) + " "
-					+ "[" + tags.get(i) + "] ";
-			System.out.println(info);
-		}
+	public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        if (command == Command.ADD) {
+        	builder.append("+ ");
+        } else {
+        	builder.append("- ");
+        }
+        builder.append(person.toString())
+        		.append(" ")
+        		.append(tag.toString());
+        return builder.toString();
 	}
 }
