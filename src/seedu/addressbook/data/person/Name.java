@@ -65,7 +65,10 @@ public class Name {
         if (other == null) {
             return false;
         }
-        return this.toString().contains(other.toString()) || other.toString().contains(this.toString());
+        String n1 = this.toString().toLowerCase();
+        String n2 = other.toString().toLowerCase();
+        
+        return n1.contains(n2) || n2.contains(n1);
     }
 
 }
