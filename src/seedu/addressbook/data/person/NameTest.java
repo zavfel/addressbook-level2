@@ -34,5 +34,12 @@ public class NameTest {
         assertTrue(n1.isSimilar(n2));
         
     }
+    
+    @Test
+    public void nameWithCommaInput_returnsTrue() throws IllegalValueException {
+        final Name n2 = new Name("Smith, John K");
+        assertTrue(n1.isSimilar(n2));
+        
+    }
 
 }

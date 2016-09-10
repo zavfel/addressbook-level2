@@ -13,7 +13,7 @@ public class Name {
 
     public static final String EXAMPLE = "John Doe";
     public static final String MESSAGE_NAME_CONSTRAINTS = "Person names should be spaces or alphabetic characters";
-    public static final String NAME_VALIDATION_REGEX = "[\\p{Alpha} ]+";
+    public static final String NAME_VALIDATION_REGEX = "[\\p{Alpha}\\, ]+";
 
     public final String fullName;
 
@@ -68,7 +68,20 @@ public class Name {
         String n1 = this.toString().toLowerCase();
         String n2 = other.toString().toLowerCase();
         
-        return n1.contains(n2) || n2.contains(n1);
+        String[] arr1 = n1.split("[,\\s+]+");
+        String[] arr2 = n2.split("[,\\s+]+");
+        
+        for (String s1:arr1) {
+            for (String s2:arr2) {
+                if (s1.equals(s2)) {
+                    return true;
+                }
+            }
+        }
+        
+        
+        
+        return false;
     }
 
 }
