@@ -17,9 +17,15 @@ public class NameTest {
     }
     
     @Test
-    public void test() throws IllegalValueException {
+    public void similarInput_returnsTrue() throws IllegalValueException {
         final Name n2 = new Name("John");
         assertTrue(n1.isSimilar(n2));
+    }
+    
+    @Test
+    public void nullInput_returnsFalse() {
+        final Name n2 = null;
+        assertFalse(n1.isSimilar(n2));
     }
 
 }
