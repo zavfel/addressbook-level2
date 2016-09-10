@@ -62,7 +62,7 @@ public class Name {
     }
     
     public boolean isSimilar(Name other) {
-        return false;
+        return this.toString().contains(other.toString()) || other.toString().contains(this.toString());
     }
 
 }
