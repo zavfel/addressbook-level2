@@ -62,6 +62,9 @@ public class Name {
     }
     
     public boolean isSimilar(Name other) {
+        if (other == null) {
+            return false;
+        }
         return this.toString().contains(other.toString()) || other.toString().contains(this.toString());
     }
 
