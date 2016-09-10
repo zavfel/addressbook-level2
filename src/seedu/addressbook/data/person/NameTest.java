@@ -27,5 +27,12 @@ public class NameTest {
         final Name n2 = null;
         assertFalse(n1.isSimilar(n2));
     }
+    
+    @Test
+    public void caseInsensitiveInput_returnsTrue() throws IllegalValueException {
+        final Name n2 = new Name("john");
+        assertTrue(n1.isSimilar(n2));
+        
+    }
 
 }
